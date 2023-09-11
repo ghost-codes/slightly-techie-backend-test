@@ -12,13 +12,7 @@ type Config struct {
 	ServerAddr           string        `mapstructure:"SEVER_ADDR"`
 	ServerUrl            string        `mapstructure:"SEVER_URL"`
 	SCHEME               string        `mapstructure:"SCHEME"`
-	DBHOST               string        `mapstructure:"DB_HOST"`
-	DBPort               string        `mapstructure:"DB_PORT"`
-	DBUser               string        `mapstructure:"DB_USER"`
-	DBPassword           string        `mapstructure:"DB_PASSWORD"`
 	DBName               string        `mapstructure:"DB_NAME"`
-	PaystackSK           string        `mapstructure:"PAYSTACK_SECRET_KEY"`
-	PaystackPK           string        `mapstructure:"PAYSTACK_PUBLIC_KEY"`
 }
 
 func (config *Config) DBSource() string {
