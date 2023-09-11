@@ -23,7 +23,7 @@ func main() {
 
 	docs.SwaggerInfo.Title = "Slightly Techie - Blog Test"
 	docs.SwaggerInfo.Version = "1.0"
-	docs.SwaggerInfo.Host = config.ServerAddr
+	docs.SwaggerInfo.Host = config.ServerUrl
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 
