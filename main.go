@@ -26,7 +26,7 @@ func main() {
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = config.ServerUrl
 	docs.SwaggerInfo.BasePath = "/"
-	docs.SwaggerInfo.Schemes = []string{"http"}
+	docs.SwaggerInfo.Schemes = []string{config.SCHEME}
 
 	fmt.Println(docs.SwaggerInfo.Host)
 

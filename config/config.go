@@ -11,6 +11,7 @@ type Config struct {
 	DBDriver             string        `mapstructure:"DB_DRIVER"`
 	ServerAddr           string        `mapstructure:"SEVER_ADDR"`
 	ServerUrl            string        `mapstructure:"SEVER_URL"`
+	SCHEME               string        `mapstructure:"SCHEME"`
 	DBHOST               string        `mapstructure:"DB_HOST"`
 	DBPort               string        `mapstructure:"DB_PORT"`
 	DBUser               string        `mapstructure:"DB_USER"`
