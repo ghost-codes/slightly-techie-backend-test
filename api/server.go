@@ -65,10 +65,13 @@ func (server *Server) setupRouter() {
 
 		user.POST("/sign_up", server.createUserWithEmailPassword)
 		user.POST("/login", server.loginWithEmailPassword)
-		_ = user.Use(middleware.AuthMiddleware(*server.db, server.tokenMaker))
+		auth := user.Use(middleware.AuthMiddleware(*server.db, server.tokenMaker))
 		{
-			// auth.GET("/me", userRepo.me)
-			// auth.GET("/update_profile", userRepo.updateUserProfile)
+			auth.GET("/post", server.ViewAllPosts)
+			auth.POST("/post", server.CreatePost)
+			auth.GET("/post/:id", server.ViewPost)
+			auth.DELETE("/post/:id", server.DeletePost)
+			auth.PATCH("/post/:id", server.UpdatePost)
 
 		}
 

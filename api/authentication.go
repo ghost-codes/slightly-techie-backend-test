@@ -58,8 +58,7 @@ func newUserResponse(user models.User) UserResponse {
 func (server *Server) createUserWithEmailPassword(ctx *gin.Context) {
 	req := createUserWithEmailPasswordReq{}
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
-		ctx.JSON(http.StatusBadRequest, NewErrorJson(err))
+	if err := ctx.BindJSON(&req); err != nil {
 		return
 	}
 
@@ -120,7 +119,7 @@ type loginUserReq struct {
 func (server *Server) loginWithEmailPassword(ctx *gin.Context) {
 	req := loginUserReq{}
 
-	if err := ctx.ShouldBindJSON(&req); err != nil {
+	if err := ctx.BindJSON(&req); err != nil {
 		ctx.JSON(http.StatusBadRequest, NewErrorJson(err))
 		return
 	}
@@ -175,7 +174,7 @@ type verifyEmailReq struct {
 // func (server *Server) verifyEmail(ctx *gin.Context) {
 // 	var req verifyEmailReq
 
-// 	if err := ctx.ShouldBindQuery(&req); err != nil {
+// 	if err := ctx.BindQuery(&req); err != nil {
 // 		ctx.JSON(http.StatusBadRequest, NewErrorJson(err))
 // 		return
 // 	}

@@ -25,6 +25,7 @@ func NewGorm(dbConnLink string) (*gorm.DB, error) {
 		DB: db,
 		Models: []interface{}{
 			&models.User{},
+			&models.Post{},
 		},
 	}
 

@@ -23,7 +23,9 @@ func ValidationErrorToText(e *validator.FieldError) string {
 	if e == nil {
 		return ""
 	}
+
 	err := *e
+
 	switch err.Tag() {
 	case "required":
 		return fmt.Sprintf("%s is required", err.Field())
