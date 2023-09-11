@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	api "ghost-codes/slightly-techie-blog/api"
@@ -26,6 +27,8 @@ func main() {
 	docs.SwaggerInfo.Host = config.ServerUrl
 	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
+
+	fmt.Println(docs.SwaggerInfo.Host)
 
 	server, err := api.NewServer(config)
 
