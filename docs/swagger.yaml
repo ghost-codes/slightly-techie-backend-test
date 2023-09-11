@@ -1,0 +1,119 @@
+definitions:
+  api.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      id:
+        type: integer
+      last_name:
+        type: string
+      username:
+        type: string
+    type: object
+  api.createUserWithEmailPasswordReq:
+    properties:
+      contact:
+        type: string
+      email:
+        type: string
+      first_name:
+        type: string
+      last_name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      username:
+        minLength: 8
+        type: string
+    required:
+    - email
+    - first_name
+    - last_name
+    - password
+    - username
+    type: object
+  api.errorJson:
+    properties:
+      message:
+        type: string
+    type: object
+  api.loginUserReq:
+    properties:
+      password:
+        type: string
+      username_email:
+        type: string
+    required:
+    - password
+    - username_email
+    type: object
+  api.loginUserResponse:
+    properties:
+      access_token:
+        type: string
+      refresh_token:
+        type: string
+      user:
+        $ref: '#/definitions/api.UserResponse'
+    type: object
+info:
+  contact: {}
+paths:
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: log existing users in with email and password
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.loginUserReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.loginUserResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: log existing user in
+      tags:
+      - Authentication
+  /signup:
+    post:
+      consumes:
+      - application/json
+      description: create new user using email and password
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.createUserWithEmailPasswordReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.loginUserResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: signup new user
+      tags:
+      - Authentication
+swagger: "2.0"
