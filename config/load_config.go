@@ -9,7 +9,7 @@ import (
 func LoadConfig(path string) (config Config, err error) {
 	viper.AddConfigPath(path)
 
-	viper.SetConfigFile("./config/.env")
+	viper.SetConfigFile(".env")
 
 	viper.AutomaticEnv()
 
