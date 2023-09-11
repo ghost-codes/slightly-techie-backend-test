@@ -2,12 +2,13 @@ package db
 
 import "gorm.io/gorm"
 
+// swagger:model Post
 type Post struct {
-	gorm.Model
-	ID     int64 `gorm:"primaryKey"`
-	Text   string
-	UserID int64
-	User   User
+	gorm.Model       // swagger:ignore
+	ID         int64 `gorm:"primaryKey"`
+	Text       string
+	UserID     int64
+	User       User
 }
 
 func (store *Store) CreatePost(post *Post) error {
@@ -42,9 +43,9 @@ func (store *Store) ViewOnePost(id int64, uid int64) (*Post, error) {
 	return post, nil
 }
 
-func (store *Store) ViewAll(uid int64) ([]Post, error) {
+func (store *Store) ViewAll(uid int64, limit int, offset int) ([]Post, error) {
 	post := []Post{}
-	if err := store.Where("user_id = ?", uid).Find(&post).Error; err != nil {
+	if err := store.Where("user_id = ?", uid).Limit(limit).Offset(offset).Find(&post).Error; err != nil {
 		return nil, err
 	}
 	return post, nil

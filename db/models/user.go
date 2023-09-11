@@ -1,11 +1,9 @@
 package db
 
-import (
-	"gorm.io/gorm"
-)
+import "gorm.io/gorm"
 
 type User struct {
-	gorm.Model
+	gorm.Model            // swagger:ignore
 	ID             int64  `gorm:"primaryKey"  json:"id"`
 	Username       string `gorm:"unique" json:"username"`
 	FirstName      string `json:"first_name"`

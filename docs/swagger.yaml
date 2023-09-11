@@ -14,6 +14,14 @@ definitions:
       username:
         type: string
     type: object
+  api.createPostRequest:
+    properties:
+      text:
+        minLength: 10
+        type: string
+    required:
+    - text
+    type: object
   api.createUserWithEmailPasswordReq:
     properties:
       contact:
@@ -61,6 +69,60 @@ definitions:
       user:
         $ref: '#/definitions/api.UserResponse'
     type: object
+  api.postResponce:
+    properties:
+      data:
+        $ref: '#/definitions/db.Post'
+      message:
+        type: string
+    type: object
+  api.postsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/db.Post'
+        type: array
+      message:
+        type: string
+    type: object
+  api.updatePostRequest:
+    properties:
+      text:
+        minLength: 10
+        type: string
+    required:
+    - text
+    type: object
+  db.Post:
+    properties:
+      id:
+        description: gorm.Model       // swagger:ignore
+        type: integer
+      text:
+        type: string
+      user:
+        $ref: '#/definitions/db.User'
+      userID:
+        type: integer
+    type: object
+  db.User:
+    properties:
+      email:
+        type: string
+      first_name:
+        type: string
+      hashed_password:
+        type: string
+      id:
+        description: gorm.Model            // swagger:ignore
+        type: integer
+      last_name:
+        type: string
+      security_key:
+        type: string
+      username:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -88,6 +150,129 @@ paths:
           schema:
             $ref: '#/definitions/api.errorJson'
       summary: log existing user in
+      tags:
+      - Authentication
+  /post:
+    get:
+      consumes:
+      - application/json
+      description: view user post with id
+      produces:
+      - application/json
+      responses:
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: View Post
+      tags:
+      - Authentication
+    post:
+      consumes:
+      - application/json
+      description: create new user post
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.createPostRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.postResponce'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: Create Post
+      tags:
+      - Authentication
+  /post/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete user post
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: Delete Post
+      tags:
+      - Authentication
+    get:
+      consumes:
+      - application/json
+      description: view user post with id
+      parameters:
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: ' '
+        in: query
+        name: count
+        type: integer
+      - description: ' '
+        in: query
+        name: page
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.postsResponse'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: View Post
+      tags:
+      - Authentication
+    patch:
+      consumes:
+      - application/json
+      description: update user post
+      parameters:
+      - description: ' '
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/api.updatePostRequest'
+      - description: ' '
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/api.postResponce'
+        default:
+          description: ""
+          schema:
+            $ref: '#/definitions/api.errorJson'
+      summary: Update Post
       tags:
       - Authentication
   /signup:

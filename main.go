@@ -5,6 +5,7 @@ import (
 
 	api "ghost-codes/slightly-techie-blog/api"
 	config "ghost-codes/slightly-techie-blog/config"
+	"ghost-codes/slightly-techie-blog/docs"
 
 	_ "github.com/lib/pq"
 )
@@ -19,6 +20,12 @@ func main() {
 	if err != nil {
 		log.Fatal("cannot connect to db:", err)
 	}
+
+	docs.SwaggerInfo.Title = "Slightly Techie - Blog Test"
+	docs.SwaggerInfo.Version = "1.0"
+	docs.SwaggerInfo.Host = config.ServerAddr
+	docs.SwaggerInfo.BasePath = "/"
+	docs.SwaggerInfo.Schemes = []string{"http"}
 
 	server, err := api.NewServer(config)
 

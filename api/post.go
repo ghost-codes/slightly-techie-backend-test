@@ -12,6 +12,11 @@ type createPostRequest struct {
 	Text string `json:"text" binding:"min=10,required"`
 }
 
+type queryRequestParams struct {
+	Count int32 `form:"count" binding:"default=20,min=5"`
+	Page  int32 `form:"page" binding:"default=1"`
+}
+
 type updatePostRequest struct {
 	Text string `json:"text" binding:"min=10,required"`
 }
@@ -28,6 +33,15 @@ type postsResponse struct {
 	Message string        `json:"message"`
 }
 
+// @Summary      Create Post
+// @Description  create new user post
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        body    body   	createPostRequest  true " "
+// @Success      200  	{object}   	postResponce
+// @response     default  {object}  errorJson
+// @Router       /post [post]
 func (server *Server) CreatePost(ctx *gin.Context) {
 	user, err := util.GetUserFromCTX(ctx)
 
@@ -57,6 +71,16 @@ func (server *Server) CreatePost(ctx *gin.Context) {
 	})
 }
 
+// @Summary      Update Post
+// @Description  update user post
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param        body    body   	updatePostRequest  true " "
+// @Param      	id 		path	int true " "
+// @Success      200  	{object}   	postResponce
+// @response     default  {object}  errorJson
+// @Router       /post/{id} [patch]
 func (server *Server) UpdatePost(ctx *gin.Context) {
 	user, err := util.GetUserFromCTX(ctx)
 
@@ -91,6 +115,14 @@ func (server *Server) UpdatePost(ctx *gin.Context) {
 	})
 }
 
+// @Summary      Delete Post
+// @Description  delete user post
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param      	id 		path	int true " "
+// @response     default  {object}  errorJson
+// @Router       /post/{id} [delete]
 func (server *Server) DeletePost(ctx *gin.Context) {
 	user, err := util.GetUserFromCTX(ctx)
 
@@ -114,6 +146,17 @@ func (server *Server) DeletePost(ctx *gin.Context) {
 	})
 }
 
+// @Summary      View Post
+// @Description  view user post with id
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @Param      	id 		path	int true " "
+// @Param      count 		query	int false " "
+// @Param      	page 		query	int false " "
+// @Success      200  	{object}   	postsResponse
+// @response     default  {object}  errorJson
+// @Router       /post/{id} [get]
 func (server *Server) ViewPost(ctx *gin.Context) {
 	user, err := util.GetUserFromCTX(ctx)
 
@@ -139,7 +182,19 @@ func (server *Server) ViewPost(ctx *gin.Context) {
 	})
 }
 
+// @Summary      View Post
+// @Description  view user post with id
+// @Tags         Authentication
+// @Accept       json
+// @Produce      json
+// @response     default  {object}  errorJson
+// @Router       /post [get]
 func (server *Server) ViewAllPosts(ctx *gin.Context) {
+	queryParams := queryRequestParams{}
+
+	if err := ctx.BindQuery(&queryParams); err != nil {
+		return
+	}
 	user, err := util.GetUserFromCTX(ctx)
 
 	if err != nil {
@@ -147,7 +202,7 @@ func (server *Server) ViewAllPosts(ctx *gin.Context) {
 		return
 	}
 
-	post, err := server.db.ViewAll(user.ID)
+	post, err := server.db.ViewAll(user.ID, int(queryParams.Count), int(queryParams.Page*queryParams.Count))
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, NewErrorJson(err))
 		return

@@ -13,6 +13,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kardianos/service"
 	"github.com/stripe/stripe-go/v72"
+
+	swaggerFiles "github.com/swaggo/files"
+	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
 type Server struct {
@@ -53,19 +56,14 @@ func NewServer(config config.Config) (*Server, error) {
 func (server *Server) setupRouter() {
 	router := gin.Default()
 
-	// if v, ok := binding.Validator.Engine().(*validator.Validate); ok {
-	// 	v.RegisterValidation("phone", validPhoneNumber)
-	// }
-
 	router.Use(middleware.Errors("./config/.env", "rollbackToken", service.ConsoleLogger))
-
-	user := router.Group("/user")
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	{
 
-		user.POST("/sign_up", server.createUserWithEmailPassword)
-		user.POST("/login", server.loginWithEmailPassword)
-		auth := user.Use(middleware.AuthMiddleware(*server.db, server.tokenMaker))
+		router.POST("/sign_up", server.createUserWithEmailPassword)
+		router.POST("/login", server.loginWithEmailPassword)
+		auth := router.Use(middleware.AuthMiddleware(*server.db, server.tokenMaker))
 		{
 			auth.GET("/post", server.ViewAllPosts)
 			auth.POST("/post", server.CreatePost)

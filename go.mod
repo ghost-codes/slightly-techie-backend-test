@@ -15,6 +15,8 @@ require (
 	github.com/spf13/viper v1.16.0
 	github.com/stripe/stripe-go/v72 v72.122.0
 	github.com/stvp/rollbar v0.5.1
+	github.com/swaggo/files v1.0.1
+	github.com/swaggo/gin-swagger v1.6.0
 	github.com/swaggo/swag v1.16.2
 	golang.org/x/crypto v0.13.0
 	google.golang.org/api v0.139.0
