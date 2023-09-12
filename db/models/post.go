@@ -19,6 +19,9 @@ func (store *Store) CreatePost(post *Post) error {
 }
 
 func (store *Store) UpdatePost(post *Post) error {
+	if err := store.Where("user_id = ?", post.UserID).Where("id = ?", post.ID).First(&Post{}).Error; err != nil {
+		return err
+	}
 	if err := store.Save(post).Error; err != nil {
 		return err
 	}
@@ -26,6 +29,9 @@ func (store *Store) UpdatePost(post *Post) error {
 }
 
 func (store *Store) DeletePost(id int64, uid int64) error {
+	if err := store.Where("user_id = ?", uid).Where("id = ?", id).First(&Post{}).Error; err != nil {
+		return err
+	}
 	if err := store.Delete(&Post{UserID: uid, ID: id}).Error; err != nil {
 		return err
 	}
@@ -37,7 +43,7 @@ func (store *Store) ViewOnePost(id int64, uid int64) (*Post, error) {
 		ID:     id,
 		UserID: uid,
 	}
-	if err := store.First(post).Error; err != nil {
+	if err := store.Where("user_id = ?", uid).Where("id = ?", id).First(&Post{}).Error; err != nil {
 		return nil, err
 	}
 	return post, nil

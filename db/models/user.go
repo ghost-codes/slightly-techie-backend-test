@@ -32,7 +32,7 @@ func (store *Store) UpdateUser(ua *User) (err error) {
 // Get by ID
 func (store *Store) GetUserByID(uid int64) (*User, error) {
 	user := User{ID: uid}
-	if err := store.First(&user).Error; err != nil {
+	if err := store.Where("id = ?", uid).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil
@@ -40,8 +40,8 @@ func (store *Store) GetUserByID(uid int64) (*User, error) {
 
 // Get by ID
 func (store *Store) GetUserByEmail(email string) (*User, error) {
-	user := User{Email: email}
-	if err := store.First(&user).Error; err != nil {
+	user := User{}
+	if err := store.Where("email = ? OR username = ?", email, email).First(&user).Error; err != nil {
 		return nil, err
 	}
 	return &user, nil

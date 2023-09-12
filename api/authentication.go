@@ -1,7 +1,6 @@
 package api
 
 import (
-	"database/sql"
 	"fmt"
 	models "ghost-codes/slightly-techie-blog/db/models"
 	"ghost-codes/slightly-techie-blog/util"
@@ -126,13 +125,10 @@ func (server *Server) loginWithEmailPassword(ctx *gin.Context) {
 
 	user, err := server.db.GetUserByEmail(req.UsernameEmail)
 	if err != nil {
-		if err == sql.ErrNoRows {
-			err = fmt.Errorf("user does not exist:%v", err)
-			ctx.JSON(http.StatusNotFound, NewErrorJson(err))
-			return
-		}
-		ctx.JSON(http.StatusInternalServerError, NewErrorJson(err))
+		err = fmt.Errorf("user does not exist: %v", err)
+		ctx.JSON(http.StatusNotFound, NewErrorJson(err))
 		return
+
 	}
 
 	if err := util.CheckPassword(req.Password, user.HashedPassword); err != nil {

@@ -13,8 +13,8 @@ type createPostRequest struct {
 }
 
 type queryRequestParams struct {
-	Count int32 `form:"count" binding:"default=20,min=5"`
-	Page  int32 `form:"page" binding:"default=1"`
+	Count int32 `form:"count" default:"20"`
+	Page  int32 `form:"page" default:"1"`
 }
 
 type updatePostRequest struct {
